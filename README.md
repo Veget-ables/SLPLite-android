@@ -1,5 +1,9 @@
 
 ## SLPLite
+
+[![](https://jitpack.io/v/Veget-ables/SLPLite-android.svg)](https://jitpack.io/#Veget-ables/SLPLite-android)
+
+
 SLPLiteはSQLiteをラップして作成されたO/Rマッパーである．javaの標準機能であるリフレクション，ジェネリックの練習のために作成された．
 現在実装している機能はデータベースのCreate, Read, Update(レコードの新規作成)である．
 
