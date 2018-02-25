@@ -65,7 +65,7 @@ public class SampleActivity extends Activity {
 ```  
 
 DBに保存されているデータを取得したい場合は，readData()を呼ぶことで取得できる．
-第1引数には取得したいEntityのテーブル名，第2引数には読み込み完了後に呼ばれるReadProcessはNonNullである．
+第1引数には取得したいEntityのテーブル名，第2引数の読み込み完了後に呼ばれるReadProcessはNonNullである．
 ```java
 public class SampleActivity extends Activity {
         private SLPLite mSLPLite;
