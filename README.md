@@ -10,7 +10,8 @@ SLPLiteはSQLiteをラップして作成されたO/Rマッパーである．java
 ### Usage
 
 まずSLPLiteConfigのインスタンスを作成しDBの初期値を決め，作成したconfigを引数にSLPLiteのインスタンスを作成する．
-インスタンスの生成時にDBのスキーマが作成される．
+インスタンスの生成時にDBのスキーマが作成される．  
+
 
 ```java
 public class SampleActivity extends Activity {
@@ -38,8 +39,9 @@ public class SampleActivity extends Activity {
 }
 ```
 
+
 configで設定したテーブルのEntityに値を格納し，writeData()でDBに書き出す．
-引数の一つであり，書き出し処理後に呼ばれるcallbackのWriteProcessはNullableである．
+第1引数には設定したEntityのオブジェクト，第2引数の書き出し処理後に呼ばれるWriteProcessはNullableである．
 ```java
 public class SampleActivity extends Activity {
         private SLPLite mSLPLite;
@@ -48,7 +50,7 @@ public class SampleActivity extends Activity {
         // ...
         
         private void write(){
-            mSLPLite.writeData(dataSet, new WriteProcess() { // SLPLiteに書き出す.結果はcallbackで受取る．
+            mSLPLite.writeData(dataSet, new WriteProcess() {
                 @Override
                 public void onSucceededWriting() {
                 }
@@ -60,10 +62,10 @@ public class SampleActivity extends Activity {
             });
         }
 }
-```
+```  
 
 DBに保存されているデータを取得したい場合は，readData()を呼ぶことで取得できる．
-第一引数には，取得したいEntityのテーブル名，第二引数には読み込み完了後に呼ばれるcallbackのReadProcessを渡す．
+第1引数には取得したいEntityのテーブル名，第2引数には読み込み完了後に呼ばれるReadProcessはNonNullである．
 ```java
 public class SampleActivity extends Activity {
         private SLPLite mSLPLite;
@@ -84,22 +86,21 @@ public class SampleActivity extends Activity {
             });
         }
 }
-```
+```  
 
-
-Assetsにデータベースファイルを配置すると，インストール時にそれを再利用する．
+AssetsにDBファイルを配置すると，インストール時にそれを再利用する．
 ```java
         // 既存のDBを再利用したい場合に利用する.再利用するDBはAssetsに入っている前提.
         mSLPLite.recycleAssetsDataBase();
 ```
 
-データベース操作以外にもCSVファイルへの書き出しをサポートしている．デフォルトではCSVファイルに書き出される．
+DB操作以外にもCSVファイルへの書き出しをサポートしている．デフォルトではCSVファイルに書き出される．
 ```java
         SLPLiteConfig cfg = new SLPLiteConfig(DATABASE_NAME, DATABASE_VERSION, tables)
                 .setDBPath(this)
                 .setSavedCsv(false); // csvファイルを書き出さない
 
-```
+```  
 
 ### 書き出したCSVファイルを端末から取り出す
 書き出しに成功したCSVファイルは端末の `data/data/アプリのpackage名/files/Entityのクラス名.csv`に書き出される．端末からCSVファイルを取り出すためにはターミナルから以下のようにして書き出す．(adbコマンドを持つパッケージをインストールしていることが前提)
