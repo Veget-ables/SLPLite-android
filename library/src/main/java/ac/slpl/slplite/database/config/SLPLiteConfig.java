@@ -19,7 +19,7 @@ public class SLPLiteConfig {
     private int DBVersion;
     private Map<String, Class> tables;
 
-    private boolean isSavedCsv = true;
+    private boolean isSavedCsv = false;
     private File dbPath;
     private String assetDBName;
 

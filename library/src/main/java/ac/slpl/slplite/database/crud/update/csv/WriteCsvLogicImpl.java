@@ -1,6 +1,7 @@
 package ac.slpl.slplite.database.crud.update.csv;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,15 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ac.slpl.slplite.database.crud.update.WriteLogic;
+import ac.slpl.slplite.database.listener.WriteProcess;
 
 
-public class WriteCsvLogicImpl<E> extends WriteLogic<E> {
+public class WriteCsvLogicImpl<E> extends WriteLogic<E> implements WriteProcess{
     private final String NEW_LINE = System.getProperty("line.separator");
     private final Context mContext;
+    private WriteProcess mListener;
 
-    public WriteCsvLogicImpl(Context context) {
+    public WriteCsvLogicImpl(Context context, WriteProcess listener) {
         super(null);
         mContext = context;
+        mListener = (listener == null) ? this : listener;
     }
 
     @Override
@@ -67,6 +71,16 @@ public class WriteCsvLogicImpl<E> extends WriteLogic<E> {
     }
 
     private void executeWriteTask(List<E> dataList) {
-        new WriteCsvAsyncTask(mContext).execute(dataList);
+        new WriteCsvAsyncTask(mListener, mContext).execute(dataList);
+    }
+
+    @Override
+    public void onSucceededWriting() {
+        Log.i(getClass().toString(), "onSucceededWriting");
+    }
+
+    @Override
+    public void onFailedProcess(String message) {
+        throw new RuntimeException(message);
     }
 }
