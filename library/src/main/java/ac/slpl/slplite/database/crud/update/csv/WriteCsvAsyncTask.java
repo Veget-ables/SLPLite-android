@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import ac.slpl.slplite.database.listener.WriteProcess;
+
 import static ac.slpl.slplite.database.config.ExcludeParameter.INSTANT_RUN_CHANGE;
 import static ac.slpl.slplite.database.config.ExcludeParameter.INSTANT_RUN_UID;
 import static ac.slpl.slplite.database.config.ExcludeParameter.PARCELABLE;
@@ -19,14 +21,16 @@ import static ac.slpl.slplite.database.config.ExcludeParameter.PARCELABLE;
 public class WriteCsvAsyncTask<T> extends AsyncTask<Object, Boolean, Boolean> {
     private final String mFileDirPath; // 端末内のfile保存先のpath
     private static CsvConfig sCfg = new CsvConfig();
+    private final WriteProcess mListener;
 
     static {
         sCfg.setUtf8bomPolicy(true); // 文字化けするのでBOMをつける
         sCfg.setIgnoreEmptyLines(true); // これがないと読み込み時にEntityに変換できない場合がある
     }
 
-    public WriteCsvAsyncTask(Context context) {
+    public WriteCsvAsyncTask(WriteProcess listener, Context context) {
         mFileDirPath = context.getFilesDir().getPath();
+        mListener = listener;
     }
 
     @Override
@@ -58,5 +62,10 @@ public class WriteCsvAsyncTask<T> extends AsyncTask<Object, Boolean, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean isWritten) {
+        if (isWritten) {
+            mListener.onSucceededWriting();
+        } else {
+            mListener.onFailedProcess("Execute is Failed");
+        }
     }
 }

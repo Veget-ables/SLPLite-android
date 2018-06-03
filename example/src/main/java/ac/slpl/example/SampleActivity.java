@@ -35,9 +35,10 @@ public class SampleActivity extends Activity {
 
         setupDatabase();
         DataSet dataSet = createDataSet(); // DataSetを作成
-        mSLPLite.writeData(dataSet, new WriteProcess() { // SLPLiteに書き出す.結果はcallbackで受取る．
+        mSLPLite.writeCsvOnly(dataSet, new WriteProcess() { // SLPLiteに書き出す.結果はcallbackで受取る．
             @Override
             public void onSucceededWriting() {
+                Log.e(getClass().toString(), "Success");
             }
 
             @Override

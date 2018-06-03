@@ -38,12 +38,16 @@ public class SLPLite<E> extends SQLiteOpenHelper {
         }
     }
 
-    public void writeData(@NonNull E dataSet, @NonNull WriteProcess listener) {
+    public void write(@NonNull E dataSet, @NonNull WriteProcess listener) {
         new WriteLogicImpl(this, listener).extractEntityAndExecute(dataSet);
 
         if (mCfg.isSavedCsv()) {
-            new WriteCsvLogicImpl(mContext).extractEntityAndExecute(dataSet);
+            new WriteCsvLogicImpl(mContext, null).extractEntityAndExecute(dataSet);
         }
+    }
+
+    public void writeCsvOnly(@NonNull E dataSet, @NonNull WriteProcess listener) {
+            new WriteCsvLogicImpl(mContext, listener).extractEntityAndExecute(dataSet);
     }
 
     public void readData(@NonNull String table, @Nullable ReadProcess listener) {
